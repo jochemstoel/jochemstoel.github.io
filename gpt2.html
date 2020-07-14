@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <style>
+        #output {
+            white-space: pre-wrap;
+        }
+    </style>
+    <script>
+        //
+    </script>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">GPT</a>
+
+        </nav>
+
+        <div class="container">
+            <div class="form-group">
+                <label for="example" class="larger"><b>Template</b> (which I need a lot more of)</label>
+                <select class="form-control" id="example" onchange="on_select()">
+                </select>
+                <label for="input_text" class="larger"><b>Prompt</b> try your own!</label>
+                <textarea class="form-control larger" id="input_text" rows="5" placeholder=""></textarea>
+            </div>
+
+            <button type="button" id="submit_button" onclick="ask()" class="btn btn-primary btn-lg">Button</button>
+            <!--<button type="button" id="more_button" onclick="answer()" class="btn btn-primary btn-lg">Answer</button>-->
+            <p>Doh.</p>
+            <div id="output"></div>
+
+
+        </div>
+        <script src="emitter.web.js"></script>
+        <script src="textSynth.js"></script>
+        <!--<script src="helpers.js"></script>-->
+        <script>
+            const ask = () => {
+                $('#output').text('') // er moet ook nog eern more knopjhe komen en een cancel, zucht
+                const input = $('#input_text').val()
+                console.log({
+                    input
+                })
+                $('#output').append(`<b>${input}</b>`)
+                textSynth(input, answer => {
+                    $('#output').append(answer)
+                    $('#submit_button').attr('disabled', 'true')
+                }).then(answer => {
+                    $('#output').text(answer)
+                    $('#submit_button').removeAttr('disabled')
+                })
+            }
+            function html_escape(s)
+{
+    var i, r, c;
+    r = "";
+    for(i = 0; i < s.length; i++) {
+        c = s[i];
+        switch(c) {
+        case "<":
+            r += "&lt;";
+            break;
+        case ">":
+            r += "&gt;";
+            break;
+        case "&":
+            r += "&amp;";
+            break;
+        case "\"":
+            r += "&quot;";
+            break;
+        default:
+            r += c;
+            break;
+        }
+    }
+    return r;
+}
+            var example_inputs = [
+                ['', 'Nothing (clear)'],
+    ["In a shocking finding, scientist discovered a herd of unicorns living in a remote, previously unexplored valley, in the Andes Mountains. Even more surprising to the researchers was the fact that the unicorns spoke perfect English.", '(Basic) Ponies discovered'],
+    ["My name is John. I am 34 year old.\n\nQ: What is my name ?\nA:", 'Answer a question with a context'],
+    [`Q: the Netherlands?
+A: Amsterdam
+Q: Germany
+A: Berlin
+Q: France
+A: `, 'Learn to answer capital of city from example'],
+    ["Making an omelette is simple!\n\n1.", 'Make a list of 10 or more things'],
+    ["A priest walks into a bar.", 'Priest walks into bar'],
+    ["Why did the chicken cross the road?", 'Why did the chicken cross the road?'],
+    [`A herd of zombies is nearing an elementary school. Predict what will happen next.`, 'Predict herd of zombies at school'],
+    [`Pro: all women should be equal
+Con: `, 'Name pros and cons this way'], 
+[`Jochem: how is everybody feeling?
+Cassandra: I feel great
+Jochem: `,'Emulate a chatlog, end with next person:']
+]
+function on_select()
+{
+    var select_el = document.getElementById("example");
+    var input_text_el = document.getElementById("input_text");
+    var val = select_el.value | 0;
+    if (val) {
+        input_text_el.value = example_inputs[val - 1][0];
+    }
+}
+example_inputs.forEach(([text, label], i) => $('#example').append(`<option value="${i+1}">${html_escape(label)}</option>`))
+        </script>
+    </body>
+</head>
+
+</html>
