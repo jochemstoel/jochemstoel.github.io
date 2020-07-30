@@ -22,7 +22,7 @@
             let value = $('#input').val()
             if (value.length > 0) {
                 $('#input').val('')
-                $('#chat').append(
+                $('#typingContainer').append(
                     `<p class="from-them" id="typing">BOT is typing a message...</p>`
                 )
                 $('#chat').append(
@@ -49,9 +49,9 @@
         <div id="chat">
 
         </div>
-
+<div id="typingContainer">
         <input type="text" class="form-control" id="input" autocomplete="off">
-
+        </div>
         <button id="send" onclick="send()" class="btn btn-primary btn-lg">Send</button>
     </div>
 </body>
