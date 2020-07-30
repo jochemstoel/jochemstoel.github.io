@@ -38,6 +38,11 @@
                     $('#chat').append(
                         `<p class="from-them">${response}</p>`
                     )
+                }).catch(error => {
+                     $('#typing').remove()
+                    $('#chat').append(
+                        `<p class="from-them">Huh? An error occured sorry. Try again.</p>`
+                    )
                 })
             }
         }
