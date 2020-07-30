@@ -1,24 +1,59 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Jochem Stoel | GitHub.io</title>
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="http://jochemstoel.github.io/dist/css/bootstrap.css">
-    <script type="text/javascript" src="http://jochemstoel.github.io/asset/app.js"></script>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://highlightjs.org/static/demo/styles/github.css">
-    <script>hljs.initHighlightingOnLoad();</script>
-  </head>    lol
-  
-  <body>
-  <nav class="navbar navbar-default"></nav>
-  <div class="container">
-  <h1>Hi!</h1>
-  <pre><code class="javascript">/* iam.js */
-let it = !ready()
-  </code></pre>
-  </div>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"> `
+
+    <link rel="stylesheet" href="style.css">
+    <script src="emitter.web.js"></script>
+    <script src="textSynth.js"></script>
+    <script>
+        const send = () => {
+            let value = $('#input').val()
+            if (value.length > 0) {
+                $('#input').val('')
+                $('#chat').append(
+                    `<p class="from-them" id="typing">BOT is typing a message...</p>`
+                )
+                $('#chat').append(
+                    `<p class="from-me">${value}</p>`
+                )
+                textSynth2(`Q: ${value}\nA: `, data => {
+                    console.log(data)
+                }).then(response => {
+                    if (response.length < 1) {
+                        response = 'Huh what?'
+                    }
+                    $('#typing').remove()
+                    $('#chat').append(
+                        `<p class="from-them">${response}</p>`
+                    )
+                })
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="chat">
+
+        </div>
+
+        <input type="text" class="form-control" id="input" autocomplete="off">
+
+        <button id="send" onclick="send()" class="btn btn-primary btn-lg">Send</button>
+    </div>
+</body>
 
 </html>
