@@ -19,6 +19,73 @@
     <script src="emitter.web.js"></script>
     <script src="textSynth.js"></script>
     <script>
+        
+        
+        
+        const DIALOG = []
+
+/**
+ * Convert dialog to prompt
+ */
+const dialogToPrompt = dialog => `${dialog.join('\n')}
+A: `
+
+
+/**
+ * Keep synthesizing until success and message not empty
+ */
+const keepSynthesizing = async(prompt, interim = console.log) => {
+    let response = await textSynth2(prompt, interim)
+    if (response.length > 1)
+        return response
+    else
+        return keepSynthesizing(prompt, interim)
+}
+
+
+
+const send = () => {
+    let value = $('#input').val()
+    if (value.length > 0) {
+        $('#input').val('')
+        $('#typingContainer').append(
+            `<p class="from-them" id="typing">GOD is typing a message...</p>`
+        )
+        $('#chat').append(
+            `<p class="from-me">${value}</p>`
+        )
+
+        DIALOG.push(`Q: ${content}`)
+        let promptTemplate = dialogToPrompt(DIALOG)
+
+
+        keepSynthesizing(promptTemplate, interim => {
+            console.log(`gpt said`, { interim })
+        }).then(response => {
+            if (response.length < 1) {
+                response = 'Huh what?'
+            }
+            $('#typing').remove()
+            $('#chat').append(
+                `<p class="from-them">${response}</p>`
+            )
+            DIALOG.push(`A: ${response}`)
+        }).catch(error => {
+             $('#typing').remove()
+            $('#chat').append(
+                `<p class="from-them">Huh? An error occured sorry. Try again.</p>`
+            )
+        })
+    } else alert('You forgot to type something!')
+}
+
+
+        
+        
+        
+        
+        
+        
         const send = () => {
             let value = $('#input').val()
             if (value.length > 0) {
