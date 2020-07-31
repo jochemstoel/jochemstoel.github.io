@@ -115,6 +115,20 @@ const send = () => {
             }
         }*/
     </script>
+    <style>
+        #chat {
+             height: -moz-calc(100% - 45px);
+    height: -webkit-calc(100% - 45px);
+    height: calc(100% - 45px);
+            overflow: auto;
+        }
+        
+        #theform {
+            background: black;
+           position: absolute; bottom: 0;
+           width: 100%; height: 45px;
+        }
+    </style>
 </head>
 
 <body>
@@ -123,9 +137,11 @@ const send = () => {
 
         </div>
         <div id="typingContainer"></div>
+        <div id="theform">
         <input type="text" class="form-control" id="input" autocomplete="off">
         
         <button id="send" onclick="send()" class="btn btn-primary btn-lg">Send</button>
+        </div>
     </div>
 </body>
 
