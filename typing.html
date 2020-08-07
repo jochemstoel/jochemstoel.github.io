@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+        
+        .fullscreen {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+        
+        .transparent {
+            opacity: 0.5;
+        }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        //
+    </script>
+
+    <body>
+        <div class="container">
+
+            <textarea class="form-control fullscreen" id="txtSuggestions" disabled>Start to type something here...</textarea>
+            <textarea class="form-control fullscreen transparent" id="txtArea"></textarea>
+            <h4>Typing status: <span id="typing-status"></span></h4>
+            <h4>Generator status: <span id="generator-status"></span></h4>
+            <div id="autocomplete"></div>
+        </div>
+        <script src="emitter.web.js"></script>
+        <script src="generator.js"></script>
+        <script>
+            let g = new Generator()
+
+            setInterval(() => {
+                $('#generator-status').text(g.generating)
+            }, 20)
+
+            g.on('data', data => {
+                    $('#autocomplete').append(data)
+                    console.log(input.value)
+                    console.log({
+                        data
+                    })
+                    $('#txtSuggestions').val(
+                        `${$('#txtSuggestions').val()} ${data}`
+                    )
+                })
+                .on('error', alert)
+
+            let input = document.querySelector('#txtArea')
+
+            // Init a timeout variable to be used below
+            let timeout = null
+
+            // Listen for keystroke events
+            input.addEventListener('keyup', e => {
+                $('#typing-status').text('typing')
+                $('#autocomplete').html(`<b>${input.value}</b>`)
+                $('#txtSuggestions').val(input.value)
+                console.log({
+                    inputv: input.value
+                })
+                clearTimeout(timeout)
+                if (g.generating)
+                    g.stop()
+                console.log('generator stopped', g.generating)
+                timeout = setTimeout(() => {
+                    console.log('Input Value:', input.value)
+                    $('#typing-status').text('stopped')
+                    g.start(input.value)
+                }, 500)
+            });
+        </script>
+    </body>
+</head>
+
+</html>
