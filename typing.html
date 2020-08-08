@@ -12,8 +12,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <style>
-        code {
-            white-space: pre-wrap;
+        body {
+            overflow: hidden;
         }
         
         .fullscreen {
@@ -38,8 +38,8 @@
     <body>
         <div class="container">
 
-            <textarea class="form-control fullscreen" id="txtSuggestions" disabled>Start to type something here...</textarea>
-            <textarea class="form-control fullscreen transparent" id="txtArea"></textarea>
+            <textarea class="form-control form-control-sm fullscreen" id="txtSuggestions" disabled>Start to type something here...</textarea>
+            <textarea class="form-control form-control-sm fullscreen transparent" id="txtArea"></textarea>
             <h4>Typing status: <span id="typing-status"></span></h4>
             <h4>Generator status: <span id="generator-status"></span></h4>
             <div id="autocomplete"></div>
@@ -48,10 +48,6 @@
         <script src="generator.js"></script>
         <script>
             let g = new Generator()
-
-            setInterval(() => {
-                $('#generator-status').text(g.generating)
-            }, 20)
 
             g.on('data', data => {
                     $('#autocomplete').append(data)
@@ -86,7 +82,7 @@
                     console.log('Input Value:', input.value)
                     $('#typing-status').text('stopped')
                     g.start(input.value)
-                }, 500)
+                }, 1500)
             });
         </script>
     </body>

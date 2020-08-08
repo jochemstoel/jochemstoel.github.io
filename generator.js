@@ -9,28 +9,28 @@ function Generator() {
     const protocol = 'gpt2'
     const emitter = new Emitter()
 
-    var output = ''
-
-
-
     this.start = prompt => {
         this.generating = true
+        let tries = 1
+        try {
+            ws = new WebSocket(host, protocol)
 
-        ws = new WebSocket(host, protocol)
+            ws.onopen = () => {
+                console.log('generating...', { prompt })
+                ws.send(`g,${prompt}`)
+            }
+            ws.onmessage = message =>
+                emitter.emit('data', message.data)
 
-        ws.onopen = () => {
-            console.log('generating...', { prompt })
-            ws.send(`g,${prompt}`)
-        }
-        ws.onmessage = message => {
-            console.log('>', message.data)
-            output += message.data
 
-            emitter.emit('data', message.data)
-        }
-
-        ws.onerror = error => {
+            ws.onerror = error => {
+                emitter.emit('error', error)
+            }
+        } catch (error) {
             emitter.emit('error', error)
+            tries++
+            console.log('retrying', tries)
+            this.start(prompt)
         }
 
         return this
