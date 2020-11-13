@@ -1,5 +1,5 @@
 const textSynth = (prompt, update) => new Promise((done, fail) => {
-    const host = 'wss://157.245.66.103' // 'ws://161.35.155.75:666'
+    const host = 'wss://157.245.66.103:666' // 'ws://161.35.155.75:666'
     const protocol = 'gpt2'
     const emitter = new Emitter()
     const ws = new WebSocket(host, protocol)
@@ -45,7 +45,7 @@ const textSynth = (prompt, update) => new Promise((done, fail) => {
 
 
 const textSynth2 = (prompt, update) => new Promise((done, fail) => {
-    const host = 'wss://157.245.66.103' // 'ws://161.35.155.75:666'
+    const host = 'wss://157.245.66.103:666' // 'ws://161.35.155.75:666'
     const emitter = new Emitter()
     const ws = new WebSocket(host)
 
