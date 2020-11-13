@@ -45,7 +45,7 @@ const textSynth = (prompt, update) => new Promise((done, fail) => {
 
 
 const textSynth2 = (prompt, update) => new Promise((done, fail) => {
-    const host = 'wss://bellard.org/textsynth/ws' // 'ws://161.35.155.75:666'
+    const host = 'wss://157.245.66.103' // 'ws://161.35.155.75:666'
     const emitter = new Emitter()
     const ws = new WebSocket(host)
 
@@ -60,7 +60,7 @@ const textSynth2 = (prompt, update) => new Promise((done, fail) => {
 
     ws.onopen = () => {
         emitter.emit('start', prompt)
-        ws.send(`g,${prompt}`)
+        ws.send(prompt)
     }
     ws.onmessage = message => {
         console.log('>', message.data)
